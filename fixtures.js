@@ -1,0 +1,21 @@
+/* Recipe combinations are illustrative, with estimated nutrition per serving.
+   One explicit module keeps the catalog replaceable with reviewed editorial data. */
+const proteins = [
+ {name:'Chicken',amount:'150 g chicken breast',cal:248,p:46,f:5,photo:'photo-1547592180-85f173990554',cook:'Cook the chicken in a skillet over medium heat for 6–8 minutes per side, until the thickest part reaches 74°C. Rest, then slice.'},
+ {name:'Salmon',amount:'150 g salmon fillet',cal:309,p:30,f:20,photo:'photo-1467003909585-2f8a72700288',cook:'Bake the salmon at 200°C for 12–15 minutes, until the thickest part reaches 63°C.'},
+ {name:'Chickpea',amount:'150 g cooked, drained chickpeas',cal:246,p:13,f:4,photo:'photo-1512621776951-a57141f2eefd',cook:'Rinse and drain the chickpeas, then warm in a skillet for 5–7 minutes.'},
+ {name:'Tofu',amount:'150 g firm tofu',cal:180,p:20,f:10,photo:'photo-1511690743698-d9d85f2fbf38',cook:'Pat the tofu dry and cut into cubes. Pan-sear for 10–12 minutes, turning until golden on all sides.'},
+ {name:'Turkey',amount:'150 g lean ground turkey',cal:255,p:35,f:12,photo:'photo-1547592166-23ac45744acd',cook:'Brown the turkey in a skillet for 8–10 minutes, breaking it apart, until it reaches 74°C.'},
+ {name:'Lentil',amount:'150 g cooked, drained lentils',cal:174,p:14,f:1,photo:'photo-1512621776951-a57141f2eefd',cook:'Rinse the cooked lentils and gently warm in a covered pan with a splash of water for 5 minutes.'},
+ {name:'Egg',amount:'2 large eggs',cal:144,p:13,f:10,photo:'photo-1511690743698-d9d85f2fbf38',cook:'Beat the eggs, pour into a nonstick skillet, and stir over medium heat until fully set.'}
+];
+const bases=[{name:'quinoa bowl',ingredient:'100 g cooked quinoa',cal:120,p:4,c:21,f:2},{name:'brown rice bowl',ingredient:'100 g cooked brown rice',cal:123,p:3,c:26,f:1},{name:'crunchy salad',ingredient:'100 g cucumber and 60 g mixed greens',cal:27,p:2,c:5,f:0},{name:'wholegrain wrap',ingredient:'1 medium wholegrain tortilla (60 g)',cal:180,p:6,c:30,f:4},{name:'sweet potato plate',ingredient:'150 g sweet potato, diced',cal:129,p:2,c:30,f:0},{name:'couscous bowl',ingredient:'100 g cooked wholewheat couscous',cal:112,p:4,c:23,f:0}];
+const styles=[{name:'Mediterranean',season:'lemon juice, oregano and black pepper'},{name:'Smoky paprika',season:'smoked paprika, cumin and lime juice'},{name:'Lemon & herb',season:'lemon juice, parsley and thyme'},{name:'Garlic & ginger',season:'grated garlic, ginger and 1 tsp reduced-sodium soy sauce'},{name:'Warm cumin',season:'cumin, coriander and lemon juice'},{name:'Chili & lime',season:'mild chili powder, lime juice and cilantro'},{name:'Rosemary',season:'chopped rosemary, garlic and black pepper'},{name:'Turmeric',season:'turmeric, black pepper and lemon juice'},{name:'Basil & tomato',season:'fresh basil, chopped tomato and garlic'},{name:'Sesame',season:'1 tsp sesame seeds, ginger and rice vinegar'}];
+const recipes=[];
+styles.forEach((s,si)=>bases.forEach((b,bi)=>proteins.forEach((p,pi)=>{
+ const fats=p.f+b.f+5+(si===9?2:0),protein=p.p+b.p+2, carbs=b.c+10+(pi===2?41:pi===5?30:3);
+ recipes.push({id:recipes.length+1,title:`${s.name} ${p.name.toLowerCase()} ${b.name}`,protein,calories:p.cal+b.cal+85+(si===9?17:0),fats,carbs,time:bi===4?35:pi===1?25:20,photo:p.photo,vegan:[2,3,5].includes(pi),category:pi===1?'Omega-3 rich':protein>=30?'High protein':[2,3,5].includes(pi)?'Plant based':'Balanced',ingredients:[p.amount,b.ingredient,'100 g broccoli or seasonal vegetables','1 tsp olive oil',s.season],steps:[bi===4?'Roast the diced sweet potato at 200°C for 25–30 minutes until tender.':bi===3?'Warm the tortilla in a dry skillet for 30 seconds per side.':bi===2?'Wash and chop the cucumber and mixed greens.':'Prepare the grain according to its packet instructions, then measure the cooked portion.',p.cook,`Steam the vegetables for 4–6 minutes, until tender-crisp. Toss with the olive oil and ${s.season}.`,bi===3?'Layer the filling and vegetables in the tortilla. Fold in the sides, roll tightly, and serve.':'Arrange everything in a bowl or on a plate. Taste, adjust the seasoning, and serve warm.']});
+})));
+// A varied opening selection; all other combinations follow.
+const featuredIds=[1,2,3,11,12,10,4,5];
+const catalog=[...featuredIds.map(id=>recipes.find(r=>r.id===id)),...recipes.filter(r=>!featuredIds.includes(r.id))];
